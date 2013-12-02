@@ -103,7 +103,9 @@ hci_data_send(unsigned char ucOpcode,
 							const unsigned char *ucTail,
 							unsigned short usTailLength)
 {
-	unsigned char *stream;
+    ucTail=ucTail; // fix unused warning
+    
+    unsigned char *stream;
 	
 	stream = ((ucArgs) + SPI_HEADER_SIZE);
 	

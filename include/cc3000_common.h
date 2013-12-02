@@ -333,17 +333,14 @@ extern unsigned long STREAM_TO_UINT32_f(char* p, unsigned short offset);
 //This macro is used for copying 32 bit to stream while converting to little endian format.
 #define UINT32_TO_STREAM(_p, _u32)	(UINT32_TO_STREAM_f(_p, _u32))
 //This macro is used for copying a specified value length bits (l) to stream while converting to little endian format.
-#define ARRAY_TO_STREAM(p, a, l) 	{register short _i; for (_i = 0; _i < l; _i++) *(p)++ = ((unsigned char *) a)[_i];}
+#define ARRAY_TO_STREAM(p, a, l) 	{register unsigned short _i; for (_i = 0; _i < l; _i++) *(p)++ = ((unsigned char *) a)[_i];}
 //This macro is used for copying received stream to 8 bit in little endian format.
 #define STREAM_TO_UINT8(_p, _offset, _u8)	{_u8 = (unsigned char)(*(_p + _offset));}
 //This macro is used for copying received stream to 16 bit in little endian format.
 #define STREAM_TO_UINT16(_p, _offset, _u16)	{_u16 = STREAM_TO_UINT16_f(_p, _offset);}
 //This macro is used for copying received stream to 32 bit in little endian format.
 #define STREAM_TO_UINT32(_p, _offset, _u32)	{_u32 = STREAM_TO_UINT32_f(_p, _offset);}
-#define STREAM_TO_STREAM(p, a, l) 	{register short _i; for (_i = 0; _i < l; _i++) *(a)++= ((unsigned char *) p)[_i];}
-
-
-
+#define STREAM_TO_STREAM(p, a, l) 	{register unsigned short _i; for (_i = 0; _i < l; _i++) *(a)++= ((unsigned char *) p)[_i];}
 
 //*****************************************************************************
 //

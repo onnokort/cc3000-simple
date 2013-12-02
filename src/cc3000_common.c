@@ -32,6 +32,7 @@
 *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
+
 //*****************************************************************************
 //
 //! \addtogroup common_api
@@ -47,24 +48,6 @@
 #include "socket.h"
 #include "wlan.h"
 #include "evnt_handler.h"
-
-//*****************************************************************************
-//
-//!  __error__
-//!
-//!  @param  pcFilename - file name, where error occurred
-//!  @param  ulLine     - line number, where error occurred
-//!
-//!  @return none
-//!
-//!  @brief stub function for ASSERT macro
-//
-//*****************************************************************************
-void
-__error__(char *pcFilename, unsigned long ulLine)
-{
-    //TODO full up function
-}
 
 
 

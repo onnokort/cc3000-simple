@@ -591,7 +591,7 @@ wlan_add_profile(unsigned long ulSecType,
 								 unsigned char* ucPf_OrKey,
 								 unsigned long ulPassPhraseLen)
 {
-	unsigned short arg_len;
+	unsigned short arg_len=0;
 	long ret;
 	unsigned char *ptr;
 	long i = 0;
@@ -713,6 +713,17 @@ wlan_add_profile(unsigned long ulSecType,
 								 unsigned char* ucPf_OrKey,
 								 unsigned long ulPassPhraseLen)
 {
+    // fix unused warnings
+    ulSecType=ulSecType;
+    ucSsid=ucSsid;
+    ulSsidLen=ulSsidLen;
+    ucBssid=ucBssid;
+    ulPriority=ulPriority;
+    ulPairwiseCipher_Or_TxKeyLen=ulPairwiseCipher_Or_TxKeyLen;
+    ulGroupCipher_TxKeyIndex=ulGroupCipher_TxKeyIndex;
+    ulKeyMgmt=ulKeyMgmt;
+    ucPf_OrKey=ucPf_OrKey;
+    ulPassPhraseLen=ulPassPhraseLen;
 	return -1;
 }
 #endif

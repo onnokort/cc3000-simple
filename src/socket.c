@@ -981,11 +981,11 @@ int
 simple_link_send(long sd, const void *buf, long len, long flags,
               const sockaddr *to, long tolen, long opcode)
 {    
-	unsigned char uArgSize,  addrlen;
-	unsigned char *ptr, *pDataPtr, *args;
-	unsigned long addr_offset;
+	unsigned char uArgSize=0,  addrlen;
+	unsigned char *ptr, *pDataPtr=0, *args;
+	unsigned long addr_offset=0;
 	int res;
-        tBsdReadReturnParams tSocketSendEvent;
+    //tBsdReadReturnParams tSocketSendEvent;
 	
 	// Check the bsd_arguments
 	if (0 != (res = HostFlowControlConsumeBuff(sd)))

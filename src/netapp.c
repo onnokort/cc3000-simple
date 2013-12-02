@@ -373,7 +373,7 @@ void netapp_ipconfig( tNetappIpconfigRetArgs * ipconfig )
 #else
 void netapp_ipconfig( tNetappIpconfigRetArgs * ipconfig )
 {
-
+    ipconfig=ipconfig; // fix unused warning
 }
 #endif
 
