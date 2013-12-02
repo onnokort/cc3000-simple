@@ -54,7 +54,7 @@ volatile sSimplLinkInformation tSLInformation;
 #define SMART_CONFIG_PROFILE_SIZE		67		// 67 = 32 (max ssid) + 32 (max key) + 1 (SSID length) + 1 (security type) + 1 (key length)
 
 #ifndef CC3000_UNENCRYPTED_SMART_CONFIG
-unsigned char key[AES128_KEY_SIZE];	
+unsigned char key_g[AES128_KEY_SIZE];	
 unsigned char profileArray[SMART_CONFIG_PROFILE_SIZE];
 #endif //CC3000_UNENCRYPTED_SMART_CONFIG
 
@@ -1154,7 +1154,7 @@ wlan_smart_config_process()
 	unsigned char *ssidPtr;
 	
 	// read the key from EEPROM - fileID 12
-	returnValue = aes_read_key(key);
+	returnValue = aes_read_key(key_g);
 	
 	if (returnValue != 0)
 		return returnValue;
@@ -1179,9 +1179,9 @@ wlan_smart_config_process()
 	
 	decKeyPtr = &profileArray[profileArray[0] + 3];
 	
-	aes_decrypt(decKeyPtr, key);
+	aes_decrypt(decKeyPtr, key_g);
 	if (profileArray[profileArray[0] + 1] > 16)
-		aes_decrypt((unsigned char *)(decKeyPtr + 16), key);
+		aes_decrypt((unsigned char *)(decKeyPtr + 16), key_g);
 	
 	if (*(unsigned char *)(decKeyPtr +31) != 0)
 	{

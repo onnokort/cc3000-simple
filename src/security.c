@@ -85,7 +85,7 @@ const unsigned char Rcon[11] = {
   0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36};
 
 
-unsigned char expandedKey[176];
+unsigned char expandedKey_g[176];
 
 //*****************************************************************************
 //
@@ -448,8 +448,8 @@ void aes_encrypt(unsigned char *state,
                  unsigned char *key)
 {
 	// expand the key into 176 bytes
-	expandKey(expandedKey, key);       
-	aes_encr(state, expandedKey);
+	expandKey(expandedKey_g, key);       
+	aes_encr(state, expandedKey_g);
 }
 
 //*****************************************************************************
@@ -472,8 +472,8 @@ void aes_encrypt(unsigned char *state,
 void aes_decrypt(unsigned char *state,
                  unsigned char *key)
 {
-    expandKey(expandedKey, key);       // expand the key into 176 bytes
-    aes_decr(state, expandedKey);
+    expandKey(expandedKey_g, key);       // expand the key into 176 bytes
+    aes_decr(state, expandedKey_g);
 }
 
 //*****************************************************************************
