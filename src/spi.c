@@ -19,11 +19,11 @@
 *
 ****************************************************************************/
 
+#include <string.h>
+#include <stdint.h>
 #include "hardware.h"
 #include "hci.h"
-#include "ArduinoCC3000Core.h"
-#include "ArduinoCC3000SPI.h"
-
+#include "spi.h"
 
 
 

@@ -40,6 +40,7 @@
 //
 //*****************************************************************************
 
+#include <string.h>
 #include "cc3000_common.h"
 #include "hci.h"
 #include "spi.h"
