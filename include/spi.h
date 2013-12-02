@@ -18,9 +18,20 @@
 *  Don't sue me if my code blows up your board and burns down your house
 *
 ****************************************************************************/
+#ifndef __SPI_H__
+#define __SPI_H__
 
 
 
+//*****************************************************************************
+//
+// If building with a C++ compiler, make all of the definitions in this header
+// have a C binding.
+//
+//*****************************************************************************
+#ifdef  __cplusplus
+extern "C" {
+#endif
 
 typedef void (*gcSpiHandleRx)(void *p);
 
@@ -40,6 +51,16 @@ extern void SpiResumeSpi(void);
 
 extern void CC3000InterruptHandler(void);
 
-extern short SPIInterruptsEnabled;
-
 extern unsigned char wlan_tx_buffer[];
+
+//*****************************************************************************
+//
+// Mark the end of the C bindings section for C++ compilers.
+//
+//*****************************************************************************
+#ifdef  __cplusplus
+}
+#endif // __cplusplus
+
+#endif
+

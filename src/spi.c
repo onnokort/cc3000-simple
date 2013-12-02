@@ -19,10 +19,7 @@
 *
 ****************************************************************************/
 
-
-#include <arduino.h>
-#include <SPI.h>
-
+#include "hardware.h"
 #include "hci.h"
 #include "ArduinoCC3000Core.h"
 #include "ArduinoCC3000SPI.h"
@@ -39,7 +36,14 @@ short SPIInterruptsEnabled=0;
 
 
 
+inline void assert_cs_and_wait() {
+    cc3k_set_cs(0);
+    cc3k_delay_us(50);
+}
 
+inline void deassert_cs() {
+    cc3k_set_cs(1);
+}
 
 #define READ                    3
 #define WRITE                   1
@@ -105,68 +109,31 @@ unsigned char tSpiReadHeader[] = {READ, 0, 0, 0, 0};
 char spi_buffer[CC3000_RX_BUFFER_SIZE];
 unsigned char wlan_tx_buffer[CC3000_TX_BUFFER_SIZE];
 
+uint8_t SPIPump(uint8_t data) {
+	uint8_t receivedData=0;
 
-
-
-
-
-
-
-
-
-
-// This is my hackaround for the Teensy. If USE_HARDWARE_SPI is set we'll use
-// the Arduino's built in hardware SPI, otherwise we bit-bang the pin
-// flipping.
-
-#if(USE_HARDWARE_SPI) 
-#define SPIPump(data)	SPI.transfer(data)
-#else
-byte SPIPump(byte data) {
-
-	byte receivedData=0;
-	
-	for (int8_t i=7; i>=0; i--) {
+    int i;
+    
+    cc3k_global_irq_enable(0);
+	for (i=7; i>=0; i--) {
 	
 		receivedData <<= 1;
 	
-		if (data & (1<<i)) {
-			digitalWriteFast(WLAN_MOSI, HIGH);
-			}
-		else {
-			digitalWriteFast(WLAN_MOSI, LOW);
-			}
-			
-		digitalWriteFast(WLAN_SCK, HIGH);
-		asm volatile("nop");
-		asm volatile("nop");
-			
-		digitalWriteFast(WLAN_SCK, LOW);
-		
-		if (digitalReadFast(WLAN_MISO)) {
-			receivedData |= 1;
-			}
-		
-		asm volatile("nop");
-		asm volatile("nop");
-		
-		}
-			
-	return(receivedData);
+		if (data & (1<<i)) 
+            cc3k_set_dout(1);
+        else 
+            cc3k_set_dout(0);
+    
+		cc3k_set_clk(1);
+        cc3k_set_clk(0);
+
+        receivedData |= cc3k_get_din() ? 1 : 0;
 	}
-#endif
+    cc3k_set_dout(0);
+    cc3k_global_irq_enable(1);
 
-
-
-
-
-
-
-
-
-
-
-
+    return receivedData;
+}
 
 //*****************************************************************************
 //
@@ -242,11 +209,11 @@ void SpiResumeSpi(void) {
 void 
 SpiTriggerRxProcessing(void)
 {
-	//
-	// Trigger Rx processing
-	//
-	SpiPauseSpi();
-	Set_CC3000_CS_NotActive();
+    //
+    // Trigger Rx processing
+    //
+    SpiPauseSpi();
+    deassert_cs();
         
         // The magic number that resides at the end of the TX/RX buffer (1 byte after the allocated size)
         // for the purpose of detection of the overrun. If the magic number is overriten - buffer overrun 
@@ -373,21 +340,14 @@ SpiFirstWrite(unsigned char *ucBuf, unsigned short usLength)
     //
     // workaround for first transaction
     //
-    Set_CC3000_CS_Active();
-	
-    delayMicroseconds(50);
-    
+    assert_cs_and_wait();
     // SPI writes first 4 bytes of data
     SpiWriteDataSynchronous(ucBuf, 4);
-    
-    delayMicroseconds(50);
-	
+    cc3k_delay_us(50);
     SpiWriteDataSynchronous(ucBuf + 4, usLength - 4);
 
     sSpiInformation.ulSpiState = eSPI_STATE_IDLE;
-    
-    Set_CC3000_CS_NotActive();
-
+    deassert_cs();
     return(0);
 }
 
@@ -485,7 +445,7 @@ SpiWrite(unsigned char *pUserBuffer, unsigned short usLength)
 		//
 		// Assert the CS line and wait till SSI IRQ line is active and then initialize write operation
 		//
-		Set_CC3000_CS_Active();
+		assert_cs_and_wait();
 
 		//
 		// Re-enable IRQ - if it was not disabled - this is not a problem...
@@ -501,7 +461,7 @@ SpiWrite(unsigned char *pUserBuffer, unsigned short usLength)
 
 			sSpiInformation.ulSpiState = eSPI_STATE_IDLE;
 
-			Set_CC3000_CS_NotActive();
+			deassert_cs();
 		}
 	}
 
@@ -761,7 +721,7 @@ void CC3000InterruptHandler(void)
 			sSpiInformation.ulSpiState = eSPI_STATE_READ_IRQ;
 			
 			/* IRQ line goes down - start reception */
-			Set_CC3000_CS_Active();
+			assert_cs_and_wait();
 
 			//
 			// Wait for TX/RX Compete which will come as DMA interrupt
@@ -779,7 +739,7 @@ void CC3000InterruptHandler(void)
 
 			sSpiInformation.ulSpiState = eSPI_STATE_IDLE;
 
-			Set_CC3000_CS_NotActive();
+			deassert_cs();
 		}
 		else {
 			}
