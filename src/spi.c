@@ -263,25 +263,14 @@ void SpiReadDataSynchronous(unsigned char *data, unsigned short size) {
 	long i = 0;
     unsigned char *data_to_send = tSpiReadHeader;
     	
-	for (i = 0; i < size; i ++) {
-		data[i] = SPIPump(data_to_send[0]);
-		}
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    for (i = 0; i < size; i ++) {
+        uint8_t j;
+        if (i<5)
+            j=data_to_send[i];
+        else j=0;
+        data[i] = SPIPump(j);
+    }
+}
 
 
 //*****************************************************************************
