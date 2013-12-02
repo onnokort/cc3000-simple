@@ -383,6 +383,7 @@ long
 SpiWrite(unsigned char *pUserBuffer, unsigned short usLength)
 {
     unsigned char ucPad = 0;
+    cc3k_delay_ms(2);
     
 	//
 	// Figure out the total length of the packet in order to figure out if there is padding or not
@@ -457,7 +458,8 @@ SpiWrite(unsigned char *pUserBuffer, unsigned short usLength)
 		//
 		if (tSLInformation.ReadWlanInterruptPin() == 0)
 		{
-                	SpiWriteDataSynchronous(sSpiInformation.pTxPacket, sSpiInformation.usTxPacketLength);
+            cc3k_delay_ms(2);
+            SpiWriteDataSynchronous(sSpiInformation.pTxPacket, sSpiInformation.usTxPacketLength);
 
 			sSpiInformation.ulSpiState = eSPI_STATE_IDLE;
 
