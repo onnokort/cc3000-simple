@@ -1,0 +1,24 @@
+Simplified CC3000 library
+-------------------------
+This is a try at getting the CC3000 working with a simple uC setup as
+possible and containg the TI code in a clean way.
+Also, the set of functions/hooks that needs to be replaced with
+custom code is clear and has been reduced to a minimum. Hardware-wise, 
+the following, minimal configuration is used:
+
+- one regular interrupt (e.g. ARM systick timer)
+- completely software SPI, taken and adapted from the ArduinoCC300
+  library at https://github.com/cmagagna/ArduinoCC3000.git
+
+No hardware SPI or external interrupt is needed. Of course, this means that
+using this library to talk to a CC3000 chip might make it slower than
+needed and will use more of the uCs resources.
+
+
+This is (so far) an adaptation of version V1.11 of the TI library,
+'swrc277.zip', with MD5 a6c5b8bf2c62321a6d7bae35faf76ced.
+
+
+If you use this modified library, I appreciate questions & feedback to
+Onno Kortmann <onno@gmx.net>.
+
