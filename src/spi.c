@@ -30,7 +30,7 @@
 
 // This flag lets the interrupt handler know if it should respond to
 // the WL_SPI_IRQ pin going low or not
-short SPIInterruptsEnabled=0;
+short SPIInterruptsEnabled=1;
 
 
 
