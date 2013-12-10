@@ -7,7 +7,7 @@ microcontroller to the following, minimal set of functionality, trading
 simplicity for efficiency and performance:
 
 - general purpose GPIO pins connected to SPI_CS, SPI_MISO, SPI_MOSI, SPI_SCLK,
-  SPI_IRQ and VBAT_EN_SW, using **SOFTWARE SPI only**. This is an adaptation
+  SPI_IRQ and VBAT_EN_SW, using **SOFTWARE SPI only**. This part is an adaptation
   of the ArduinoCC300 software SPI code, from
   https://github.com/cmagagna/ArduinoCC3000.git.
 
@@ -55,7 +55,7 @@ Then use the library by including like this:
 
 To the line used for linking, the following needs to be added:
 
- -L&lt;path-to-cc3000-library&gt;/src/
+ -L&lt;path-to-cc3000-library&gt;/src/ -lcc3000
 
 That's it for the build process. All functionality relies on a bunch of
 functions that should be easy to fill in. All necessary prototypes for these
